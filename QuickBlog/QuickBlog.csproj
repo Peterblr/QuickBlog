@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuickBlog.Data\QuickBlog.Data.csproj" />
+    <ProjectReference Include="..\QuickBlog.Service\QuickBlog.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using QuickBlog.BusinessManagers;
+using QuickBlog.BusinessManagers.Interfaces;
 using QuickBlog.Data;
 using QuickBlog.Data.Models;
+using QuickBlog.Service;
+using QuickBlog.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +21,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+
 
 var app = builder.Build();
 
