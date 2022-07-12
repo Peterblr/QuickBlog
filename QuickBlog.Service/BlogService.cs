@@ -1,4 +1,5 @@
-﻿using QuickBlog.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using QuickBlog.Data;
 using QuickBlog.Data.Models;
 using QuickBlog.Service.Interfaces;
 using System;
@@ -23,6 +24,15 @@ namespace QuickBlog.Service
             await _applicationDbContext.SaveChangesAsync();
 
             return blog;
+        }
+
+        public IEnumerable<Blog> GetBlog(ApplicationUser applicationUser)
+        {
+            return _applicationDbContext.Blogs
+                .Include(blog => blog.Creator)
+                .Include(blog => blog.Approver)
+                .Include(blog => blog.Posts)
+                .Where(blog => blog.Creator == applicationUser);
         }
     }
 }

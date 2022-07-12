@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using QuickBlog.BusinessManagers;
 using QuickBlog.BusinessManagers.Interfaces;
 using QuickBlog.Data;
@@ -23,7 +24,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
+builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 builder.Services.AddScoped<IBlogService, BlogService>();
+
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 
 var app = builder.Build();
