@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using QuickBlog.Authorization;
 using QuickBlog.BusinessManagers;
 using QuickBlog.BusinessManagers.Interfaces;
 using QuickBlog.Data;
@@ -28,7 +30,7 @@ builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
-
+builder.Services.AddSingleton<IAuthorizationHandler, BlogAuthorizationHandler>();
 
 var app = builder.Build();
 

@@ -18,12 +18,10 @@ namespace QuickBlog.Service
         {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<Blog> Add(Blog blog)
-        {           
-            _applicationDbContext.Add(blog);
-            await _applicationDbContext.SaveChangesAsync();
 
-            return blog;
+        public async Task<Blog> GetBlog(int bligId)
+        {
+            return await _applicationDbContext.Blogs.FirstOrDefaultAsync(blog => blog.Id == bligId);
         }
 
         public IEnumerable<Blog> GetBlog(ApplicationUser applicationUser)
@@ -34,5 +32,14 @@ namespace QuickBlog.Service
                 .Include(blog => blog.Posts)
                 .Where(blog => blog.Creator == applicationUser);
         }
+
+        public async Task<Blog> Add(Blog blog)
+        {
+            _applicationDbContext.Add(blog);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return blog;
+        }
+
     }
 }
