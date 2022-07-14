@@ -24,6 +24,15 @@ namespace QuickBlog.Service
             return _applicationDbContext.Blogs.FirstOrDefault(blog => blog.Id == bligId);
         }
 
+        public IEnumerable<Blog> GetBlogs(string searchString)
+        {
+            return _applicationDbContext.Blogs
+                .OrderByDescending(blog => blog.UpdatedOn)
+                .Include(blog => blog.Creator)
+                .Include(blog => blog.Posts)
+                .Where(blog => blog.Title.Contains(searchString) || blog.Content.Contains(searchString));
+        }
+
         public IEnumerable<Blog> GetBlog(ApplicationUser applicationUser)
         {
             return _applicationDbContext.Blogs

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuickBlog.BusinessManagers.Interfaces;
 using QuickBlog.Models;
 using System.Diagnostics;
 
@@ -6,22 +7,16 @@ namespace QuickBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IBlogBusinessManager _blogBusinessManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IBlogBusinessManager blogBusinessManager)
         {
-            _logger = logger;
+            _blogBusinessManager = blogBusinessManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int? page)
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(_blogBusinessManager.GetIndexViewModel(searchString, page));
         }
     }
 }

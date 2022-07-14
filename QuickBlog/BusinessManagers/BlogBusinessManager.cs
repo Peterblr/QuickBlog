@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 using QuickBlog.Authorization;
 using QuickBlog.BusinessManagers.Interfaces;
 using QuickBlog.Data.Models;
 using QuickBlog.Models.BlogViewModels;
+using QuickBlog.Models.HomeViewModels;
 using QuickBlog.Service.Interfaces;
 using System.Security.Claims;
 
@@ -26,6 +28,23 @@ namespace QuickBlog.BusinessManagers
             _blogService = blogService;
             _webHostEnvironment = webHostEnvironment;
             _authorizationService = authorizationService;
+        }
+
+        public IndexViewModel GetIndexViewModel(string searchString, int? page)
+        {
+            int pageSize = 20;
+
+            int pageNumber = page ?? 1;
+
+            var blogs = _blogService.GetBlogs(searchString ?? string.Empty);
+                //.Where(blog => blog.Published && blog.Approved);
+
+            return new IndexViewModel
+            {
+                Blogs = new StaticPagedList<Blog>(blogs.Skip((pageNumber - 1) * pageSize).Take(pageSize), pageNumber, pageSize, blogs.Count()),
+                SearchString = searchString,
+                PageNumber = pageNumber
+            };
         }
 
         public async Task<ActionResult<EditViewModel>> UpdateBlog(EditViewModel editViewModel, ClaimsPrincipal claimsPrincipal)

@@ -16,5 +16,7 @@ namespace QuickBlog.Service.Interfaces
         Task<Blog> Add(Blog blog);
 
         Task<Blog> Update(Blog blog);
+
+        IEnumerable<Blog> GetBlogs(string searchString);
     }
 }
