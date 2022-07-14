@@ -40,5 +40,18 @@ namespace QuickBlog.Controllers
 
             return RedirectToAction("Create");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(EditViewModel editBlogViewModel)
+        {
+            var actionResult = await _blogBusinessManager.UpdateBlog(editBlogViewModel, User);
+
+            if (actionResult.Result is null)
+            {
+                return RedirectToAction("Edit", new { editBlogViewModel.Blog.Id });
+            }
+
+            return actionResult.Result;
+        }
     }
 }

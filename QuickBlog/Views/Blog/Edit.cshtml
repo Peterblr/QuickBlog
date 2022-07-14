@@ -1,14 +1,15 @@
-﻿@model QuickBlog.Models.BlogViewModels.CreateViewModel
+﻿@model QuickBlog.Models.BlogViewModels.EditViewModel
 
 <div class="container-fluid">
-    <h1 class="mt-4">Create</h1>
+    <h1 class="mt-4">Edit</h1>
     <div class="row">
         <div class="col-lg-6">
             <div class="card mb-4">
-                <form asp-controller="Blog" asp-action="Add" method="post" enctype="multipart/form-data">
+                <form asp-controller="Blog" asp-action="Update" method="post" enctype="multipart/form-data">
+                    <input asp-for="Blog.Id" readonly hidden/>
                     <div class="card-header">
                         <i class="fas fa-pen-fancy me-1"></i>
-                        Write a Blog
+                        Edit this Blog
                     </div>
                     <div class="card-body">
                         <div class="form-group">

@@ -9,10 +9,12 @@ namespace QuickBlog.Service.Interfaces
 {
     public interface IBlogService
     {
-        Task<Blog> GetBlog(int bligId);
+        Blog GetBlog(int bligId);
 
         IEnumerable<Blog> GetBlog(ApplicationUser applicationUser);
 
         Task<Blog> Add(Blog blog);
+
+        Task<Blog> Update(Blog blog);
     }
 }

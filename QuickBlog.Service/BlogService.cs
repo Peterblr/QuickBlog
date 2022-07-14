@@ -19,9 +19,9 @@ namespace QuickBlog.Service
             _applicationDbContext = applicationDbContext;
         }
 
-        public async Task<Blog> GetBlog(int bligId)
+        public Blog GetBlog(int bligId)
         {
-            return await _applicationDbContext.Blogs.FirstOrDefaultAsync(blog => blog.Id == bligId);
+            return _applicationDbContext.Blogs.FirstOrDefault(blog => blog.Id == bligId);
         }
 
         public IEnumerable<Blog> GetBlog(ApplicationUser applicationUser)
@@ -41,5 +41,12 @@ namespace QuickBlog.Service
             return blog;
         }
 
+        public async Task<Blog> Update(Blog blog)
+        {
+            _applicationDbContext.Update(blog);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return blog;
+        }
     }
 }

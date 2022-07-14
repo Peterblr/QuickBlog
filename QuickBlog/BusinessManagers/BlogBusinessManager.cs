@@ -28,6 +28,41 @@ namespace QuickBlog.BusinessManagers
             _authorizationService = authorizationService;
         }
 
+        public async Task<ActionResult<EditViewModel>> UpdateBlog(EditViewModel editViewModel, ClaimsPrincipal claimsPrincipal)
+        {
+            var blog = _blogService.GetBlog(editViewModel.Blog.Id);
+
+            if (blog is null)
+                return new NotFoundResult();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(claimsPrincipal, blog, Operations.Update);
+
+            if (!authorizationResult.Succeeded) return DetermineActionResult(claimsPrincipal);
+
+            blog.Published = editViewModel.Blog.Published;
+            blog.Title = editViewModel.Blog.Title;
+            blog.Content = editViewModel.Blog.Content;
+            blog.UpdatedOn = DateTime.Now;
+
+            if (editViewModel.BlogHeaderImage != null)
+            {
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}\HeaderImage.jpg";
+
+                EnsureFolder(pathToImage);
+
+                using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+                {
+                    await editViewModel.BlogHeaderImage.CopyToAsync(fileStream);
+                }
+            }
+
+            return new EditViewModel
+            {
+                Blog = await _blogService.Update(blog)
+            };
+        }
+
         public async Task<Blog> CreateBlog(CreateViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
         {
             Blog blog = createViewModel.Blog;
@@ -64,19 +99,20 @@ namespace QuickBlog.BusinessManagers
 
             var authorizationResult = await _authorizationService.AuthorizeAsync(claimsPrincipal, blog, Operations.Update);
 
-            if (!authorizationResult.Succeeded)
-            {
-                if (claimsPrincipal.Identity.IsAuthenticated)
-                    return new ForbidResult();
-                else
-                    return new ChallengeResult();
-            }
-            //if (!authorizationResult.Succeeded) return DetermineActionResult(claimsPrincipal);
+            if (!authorizationResult.Succeeded) return DetermineActionResult(claimsPrincipal);
 
             return new EditViewModel
             {
-                Blog = await blog
+                Blog = blog
             };
+        }
+
+        private ActionResult DetermineActionResult(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return new ForbidResult();
+            else
+                return new ChallengeResult();
         }
 
         private void EnsureFolder(string path)
