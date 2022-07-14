@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace QuickBlog.Data.Models
 {
-    public class Post
+    public class Comment
     {
         [Key]
         public int Id { get; set; }        
 
-        [Required]
-        public string Title { get; set; } = "temp";
-        [Required]
-        public string Content { get; set; } = "temp";
+        public string Content { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime UpdatedOn { get; set; }
 
         public Blog Blog { get; set; }
-        public ApplicationUser Poser { get; set; }
+        public ApplicationUser Author { get; set; }
+
+        public Comment Parent { get; set; }
+
+        public virtual IEnumerable<Comment> Comments { get; set; }
     }
 }

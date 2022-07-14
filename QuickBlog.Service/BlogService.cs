@@ -29,7 +29,7 @@ namespace QuickBlog.Service
             return _applicationDbContext.Blogs
                 .OrderByDescending(blog => blog.UpdatedOn)
                 .Include(blog => blog.Creator)
-                .Include(blog => blog.Posts)
+                .Include(blog => blog.Comments)
                 .Where(blog => blog.Title.Contains(searchString) || blog.Content.Contains(searchString));
         }
 
@@ -38,7 +38,7 @@ namespace QuickBlog.Service
             return _applicationDbContext.Blogs
                 .Include(blog => blog.Creator)
                 .Include(blog => blog.Approver)
-                .Include(blog => blog.Posts)
+                .Include(blog => blog.Comments)
                 .Where(blog => blog.Creator == applicationUser);
         }
 

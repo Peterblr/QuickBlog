@@ -32,12 +32,13 @@ namespace QuickBlog.BusinessManagers
 
         public IndexViewModel GetIndexViewModel(string searchString, int? page)
         {
-            int pageSize = 20;
+            int pageSize = 3;
 
             int pageNumber = page ?? 1;
 
-            var blogs = _blogService.GetBlogs(searchString ?? string.Empty);
-                //.Where(blog => blog.Published && blog.Approved);
+            var blogs = _blogService.GetBlogs(searchString ?? string.Empty)
+                .Where(blog => blog.Published);
+                //&& blog.Approved);
 
             return new IndexViewModel
             {

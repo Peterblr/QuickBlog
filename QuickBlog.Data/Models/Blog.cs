@@ -11,12 +11,12 @@ namespace QuickBlog.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        public ApplicationUser Creator { get; set; } = new ApplicationUser { FirstName = "temp", LastName = "temp"};
+        public ApplicationUser Creator { get; set; } 
 
         [Required]
-        public string Title { get; set; } = "temp";
+        public string Title { get; set; } 
         [Required]
-        public string Content { get; set; } = "temp";
+        public string Content { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
         public bool Published { get; set; }
@@ -24,6 +24,6 @@ namespace QuickBlog.Data.Models
         public bool Approved { get; set; }
         public ApplicationUser Approver { get; set; }
 
-        public virtual IEnumerable<Post> Posts { get; set; }
+        public virtual IEnumerable<Comment> Comments { get; set; }
     }
 }
