@@ -9,7 +9,6 @@ namespace QuickBlog.Data.Models
 {
     public class Comment
     {
-        [Key]
         public int Id { get; set; }        
 
         public string Content { get; set; }
@@ -18,7 +17,7 @@ namespace QuickBlog.Data.Models
         public Blog Blog { get; set; }
         public ApplicationUser Author { get; set; }
 
-        public Comment Parent { get; set; }
+       // public Comment Parent { get; set; }
 
         public virtual IEnumerable<Comment> Comments { get; set; }
     }

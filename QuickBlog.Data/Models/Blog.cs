@@ -9,7 +9,6 @@ namespace QuickBlog.Data.Models
 {
     public class Blog
     {
-        [Key]
         public int Id { get; set; }
         public ApplicationUser Creator { get; set; } 
 

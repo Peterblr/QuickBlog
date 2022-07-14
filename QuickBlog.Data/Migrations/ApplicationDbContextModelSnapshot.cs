@@ -275,7 +275,7 @@ namespace QuickBlog.Data.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("QuickBlog.Data.Models.Post", b =>
+            modelBuilder.Entity("QuickBlog.Data.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -283,7 +283,13 @@ namespace QuickBlog.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -293,23 +299,15 @@ namespace QuickBlog.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PoserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("BlogId");
 
-                    b.HasIndex("PoserId");
+                    b.HasIndex("CommentId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -378,26 +376,35 @@ namespace QuickBlog.Data.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("QuickBlog.Data.Models.Post", b =>
+            modelBuilder.Entity("QuickBlog.Data.Models.Comment", b =>
                 {
+                    b.HasOne("QuickBlog.Data.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("QuickBlog.Data.Models.Blog", "Blog")
-                        .WithMany("Posts")
+                        .WithMany("Comments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickBlog.Data.Models.ApplicationUser", "Poser")
-                        .WithMany()
-                        .HasForeignKey("PoserId");
+                    b.HasOne("QuickBlog.Data.Models.Comment", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("CommentId");
+
+                    b.Navigation("Author");
 
                     b.Navigation("Blog");
-
-                    b.Navigation("Poser");
                 });
 
             modelBuilder.Entity("QuickBlog.Data.Models.Blog", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("QuickBlog.Data.Models.Comment", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
