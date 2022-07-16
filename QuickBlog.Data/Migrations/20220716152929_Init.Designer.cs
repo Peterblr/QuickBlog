@@ -12,8 +12,8 @@ using QuickBlog.Data;
 namespace QuickBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220716122231_Updated Aplication User")]
-    partial class UpdatedAplicationUser
+    [Migration("20220716152929_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,7 @@ using QuickBlog.Models.AdminViewModels;
 
 namespace QuickBlog.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AdminController : Controller
     {
         private readonly IAdminBusinessManager _adminBusinessManager;
