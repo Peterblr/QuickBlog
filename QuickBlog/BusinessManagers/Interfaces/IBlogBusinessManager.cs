@@ -13,5 +13,7 @@ namespace QuickBlog.BusinessManagers.Interfaces
         Task<ActionResult<EditViewModel>> UpdateBlog(EditViewModel editViewModel, ClaimsPrincipal claimsPrincipal);
 
         IndexViewModel GetIndexViewModel(string searchString, int? page);
+
+        Task<ActionResult<BlogViewModel>> GetBlogViewModel(int? id, ClaimsPrincipal claimsPrincipal);
     }
 }

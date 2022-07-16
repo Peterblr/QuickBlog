@@ -38,13 +38,38 @@ namespace QuickBlog.BusinessManagers
 
             var blogs = _blogService.GetBlogs(searchString ?? string.Empty)
                 .Where(blog => blog.Published);
-                //&& blog.Approved);
+            //&& blog.Approved);
 
             return new IndexViewModel
             {
                 Blogs = new StaticPagedList<Blog>(blogs.Skip((pageNumber - 1) * pageSize).Take(pageSize), pageNumber, pageSize, blogs.Count()),
                 SearchString = searchString,
                 PageNumber = pageNumber
+            };
+        }
+
+        public async Task<ActionResult<BlogViewModel>> GetBlogViewModel(int? id, ClaimsPrincipal claimsPrincipal)
+        {
+            if (id is null)
+                return new BadRequestResult();
+
+            var blogId = id.Value;
+
+            var blog = _blogService.GetBlog(blogId);
+
+            if (blog is null)
+                return new NotFoundResult();
+
+            if (!blog.Published)
+            {
+                var authorizationResult = await _authorizationService.AuthorizeAsync(claimsPrincipal, blog, Operations.Read);
+
+                if (!authorizationResult.Succeeded) return DetermineActionResult(claimsPrincipal);
+            }
+
+            return new BlogViewModel
+            {
+                Blog = blog
             };
         }
 
@@ -102,7 +127,7 @@ namespace QuickBlog.BusinessManagers
                 await createViewModel.BlogHeaderImage.CopyToAsync(fileStream);
             }
 
-            return blog;            
+            return blog;
         }
 
         public async Task<ActionResult<EditViewModel>> GetEditViewModel(int? id, ClaimsPrincipal claimsPrincipal)
