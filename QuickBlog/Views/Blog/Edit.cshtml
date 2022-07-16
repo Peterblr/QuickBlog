@@ -6,7 +6,7 @@
         <div class="col-lg-6">
             <div class="card mb-4">
                 <form asp-controller="Blog" asp-action="Update" method="post" enctype="multipart/form-data">
-                    <input asp-for="Blog.Id" readonly hidden/>
+                    <input asp-for="Blog.Id" readonly hidden />
                     <div class="card-header">
                         <i class="fas fa-pen-fancy me-1"></i>
                         Edit this Blog
@@ -40,9 +40,9 @@
                             <br />
                             <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
-                        @*                    <p style="color: orangered; margin-bottom: 0;">Please Note:</p>
+                        <p style="color: orangered; margin-bottom: 0;">Please Note:</p>
                         <p>Your post will need to be approved before it is published to the main page. Please feel free to email me to approve your post.</p>
-                        *@
+
                     </div>
                 </form>
             </div>

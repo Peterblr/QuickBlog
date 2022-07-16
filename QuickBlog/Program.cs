@@ -28,6 +28,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
 builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 builder.Services.AddTransient<IAuthorizationHandler, BlogAuthorizationHandler>();
